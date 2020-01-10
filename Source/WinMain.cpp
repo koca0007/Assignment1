@@ -1,0 +1,120 @@
+#include <GameDev2D.h>
+#include "Game.h"
+
+//Function prototypes
+void Init();
+void Shutdown();
+void Update(double delta);
+void Draw();
+void LeftMouseClicked(float x, float y);
+void RightMouseClicked(float x, float y);
+void MouseMoved(float x, float y, float previousX, float previousY);
+void KeyPressed(GameDev2D::Keyboard::Key key);
+void KeyReleased(GameDev2D::Keyboard::Key key);
+
+
+//The ONLY Global variable you should have in your project
+GameDev2D::Game* game = nullptr;
+
+//Entry point to the application
+int WINAPI WinMain(HINSTANCE aCurrentInstance, HINSTANCE aPreviousInstance, LPSTR aCommandLine, int aCommandShow)
+{
+    //Run GameDev2D, pass in the Init, Shutdown, Update and Draw methods
+    GameDev2D::Run(Init, Shutdown, Update, Draw);
+    return 0;
+}
+
+void Init()
+{
+	GameDev2D::LoadFont("OpenSans-CondBold_32");
+	GameDev2D::LoadAudio("Marcus_Angry_001");
+    GameDev2D::LoadAudio("Marcus_Angry_002");
+    GameDev2D::LoadAudio("Marcus_Angry_003");
+    GameDev2D::LoadAudio("Marcus_Happy_001");
+    GameDev2D::LoadAudio("Marcus_Happy_002");
+    GameDev2D::LoadAudio("Marcus_Happy_003");
+    GameDev2D::LoadAudio("Reload_Active");
+    GameDev2D::LoadAudio("Reload_Bad");
+    GameDev2D::LoadAudio("Reload_Full");
+    GameDev2D::LoadAudio("Reload_Good");
+	GameDev2D::LoadTexture("HUD_BulletEmpty");
+    GameDev2D::LoadTexture("HUD_BulletFull");
+    GameDev2D::LoadTexture("HUD_ReloadBar");
+    GameDev2D::LoadTexture("HUD_ReloadNeedle");
+    GameDev2D::LoadTexture("HUD_Lancer");
+
+	//Create the Game object
+	game = new GameDev2D::Game();
+
+    //Register the callbacks
+    GameDev2D::RegisterLeftMouseButtonPressedCallback(LeftMouseClicked);
+    GameDev2D::RegisterRightMouseButtonPressedCallback(RightMouseClicked);
+    GameDev2D::RegisterMouseMoveCallback(MouseMoved);
+    GameDev2D::RegisterKeyPressedCallback(KeyPressed);
+	GameDev2D::RegisterKeyReleasedCallback(KeyReleased);
+}
+
+void Shutdown()
+{
+    if (game != nullptr)
+    {
+        delete game;
+        game = nullptr;
+    }
+}
+
+void Update(double aDelta)
+{
+    if (game != nullptr)
+    {
+        game->Update(aDelta);
+    }
+}
+
+void Draw()
+{
+    if (game != nullptr)
+    {
+        game->Draw();
+    }
+}
+
+void LeftMouseClicked(float aX, float aY)
+{
+    if (game != nullptr)
+    {
+        game->HandleLeftMouseClick(aX, aY);
+    }
+}
+
+void RightMouseClicked(float aX, float aY)
+{
+    if (game != nullptr)
+    {
+        game->HandleRightMouseClick(aX, aY);
+    }
+}
+
+void KeyPressed(GameDev2D::Keyboard::Key aKey)
+{
+    if (game != nullptr)
+    {
+        game->HandleKeyPress(aKey);
+    }
+}
+
+void KeyReleased(GameDev2D::Keyboard::Key aKey)
+{
+	if (game != nullptr)
+	{
+		game->HandleKeyReleased(aKey);
+	}
+}
+
+void MouseMoved(float aX, float aY, float aPreviousX, float aPreviousY)
+{
+    if (game != nullptr)
+    {
+        game->HandleMouseMove(aX, aY, aPreviousX, aPreviousY);
+    }
+}
